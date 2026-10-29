@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motion Planner — Dylan Corbishley</title>
+<meta name="description" content="Dissertation: a portable motion-planning and collision-detection library for industrial robots.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">Motion Planner</h1>
+    <p class="lede">My final-year dissertation: a portable motion-planning and collision-detection library for industrial robots, with a Unity 6 front end for visualisation and input.</p>
+    <dl class="meta">
+      <div><dt>year</dt><dd>2025–2026</dd></div>
+      <div><dt>status</dt><dd>Final release</dd></div>
+      <div><dt>role</dt><dd>Solo · University of Leicester</dd></div>
+      <div><dt>source</dt><dd>Private repo</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <div class="shot r169" data-src="../assets/shots/motion-planner-hero.png">[ motion-planner-hero.png ]</div>
+  </section>
+
+  <section class="block wrap">
+    <div class="metrics">
+      <div><b>85%</b><span>final project grade</span></div>
+      <div><b>.NET Std 2.0</b><span>portable backend library</span></div>
+      <div><b>Unity 6</b><span>visualisation front end</span></div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — Overview</h2>
+      <div class="body prose">
+        <p>The project started with a review of industry motion planning (ROS / MoveIt!, Gazebo) and the literature surrounding their construction, swept-volume distance, continuous collision detection between rigid bodies, kinematics, statistically complete algorithms.</p>
+        <p>The planner is a library first. Portability across platforms was a priority from the start, as most existing planners only run on linux. The core targets .NET Standard 2.0 and the Unity front end is only one consumer of it.</p>
+        <p>A robot is modelled as a <strong>composition of axes</strong>, with forward kinematics provided by a tree walk. That lets one planner handle an arbitrary robot and its configuration space instead of a hard-coded arm.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — Architecture</h2>
+      <div class="body prose">
+        <p>Planners, samplers and collision checkers sit behind interfaces (<code>IPlanner</code>, <code>ISampler</code>, <code>ICollisionChecker</code>), so a strategy can be swapped without touching the robot model or the front end.</p>
+      </div>
+    </div>
+    <div class="diagram spaced">
+      <div class="flow" role="img" aria-label="A Unity 6 front end handles visualisation and input and calls the .NET Standard 2.0 planning library, which composes a planner, a sampler and a collision checker over a robot model built from a composition of axes.">
+        <div class="tier"><div class="node full"><b>Unity 6 front end</b><small>visualisation · input</small></div></div>
+        <div class="arrow"><span>↓</span></div>
+        <div class="tier"><div class="node core full"><b>MotionPlanner library</b><small>.NET Standard 2.0</small></div></div>
+        <div class="arrow"><span>↓</span><span>↓</span><span>↓</span></div>
+        <div class="tier">
+          <div class="node"><b>IPlanner</b><small>Bi-RRT · sampling-based</small></div>
+          <div class="node"><b>ISampler</b><small>configuration space</small></div>
+          <div class="node"><b>ICollisionChecker</b><small>robot vs obstacles</small></div>
+        </div>
+        <div class="arrow"><span>↓</span></div>
+        <div class="tier"><div class="node store full"><b>RobotModel</b><small>composition of axes · forward kinematics</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 class="label">03 — Screenshots</h2>
+    <div class="shots">
+      <figure>
+        <div class="shot" data-src="../assets/shots/motion-planner-path.png">[ motion-planner-path.png ]</div>
+        <figcaption>fig. 1 — A planned path around obstacles</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/motion-planner-robot.png">[ motion-planner-robot.png ]</div>
+        <figcaption>fig. 2 — Robot configuration UI</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>

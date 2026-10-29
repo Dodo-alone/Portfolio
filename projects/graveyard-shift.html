@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graveyard Shift — Dylan Corbishley</title>
+<meta name="description" content="Graveyard Shift: a Unity game on a deterministic headless simulation that allocates nothing in combat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">Graveyard Shift</h1>
+    <p class="lede">A game where you build a graveyard by day and hold off the undead by night. It's still a graybox, but underneath it has deterministic simulation, allocation-free combat, bots, replays and an adaptive combat director.</p>
+    <dl class="meta">
+      <div><dt>year</dt><dd>2026</dd></div>
+      <div><dt>status</dt><dd>In development · graybox</dd></div>
+      <div><dt>role</dt><dd>Solo</dd></div>
+      <div><dt>source</dt><dd>Private repo</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <div class="shot r169" data-src="../assets/shots/graveyard-hero.png">[ graveyard-hero.png ]</div>
+  </section>
+
+  <section class="block wrap">
+    <div class="metrics">
+      <div><b>0 B</b><span>sim allocation per tick in combat</span></div>
+      <div><b>651</b><span>content definitions, all YAML</span></div>
+      <div><b>Seeded</b><span>deterministic replays on the same build</span></div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — Overview</h2>
+      <div class="body prose">
+        <p>This is the current iteration of a long running project, taking with it some hard learned lessons from previous iterations:</p>
+        <ul>
+          <li><strong>The sim has zero Unity references.</strong> The view sends commands, and the sim publishes snapshots and events. This prevents unity bloat from reaching the core engine</li>
+          <li><strong>No allocation in the steady-state tick.</strong> Various gates all have to come in at 0 bytes per tick, so the sim adds nothing to the garbage collector mid-fight. (Unity itself still allocates; the gate is on my code.)</li>
+          <li><strong>Deterministic:</strong> seeded RNG only, no wall clock, no dependence on hash order. Any run replays exactly on the same build.</li>
+        </ul>
+        <p>Because the sim runs headless, bots can play it at scale. Balance is tested with automated studies over 20+ seeds (adversarial, synergy and patch experiments) instead of by feel alone. The current work is an adaptive night director that composes waves from enemy verbs and pushes until it challenges you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — Architecture</h2>
+      <div class="body prose"><p>The same sim drives the Unity view, the headless runner and the bots.</p></div>
+    </div>
+    <div class="diagram spaced">
+      <div class="flow" role="img" aria-label="The Unity view sends commands to the headless C# simulation and receives snapshots and events. The sim loads content from YAML. A headless runner and bots drive the same sim for balance experiments, replays and allocation and determinism gates.">
+        <div class="tier">
+          <div class="node"><b>Unity view</b><small>rendering · input</small></div>
+          <div class="node"><b>Headless runner + bots</b><small>balance studies · gates</small></div>
+        </div>
+        <div class="arrow"><span>↓ commands · ↑ snapshots, events</span><span>↓ commands</span></div>
+        <div class="tier"><div class="node core full"><b>Sim (C#, no Unity refs)</b><small>collision · pathing · construction · night director · seeded RNG · 0 B/tick</small></div></div>
+        <div class="arrow"><span>↑ loads</span></div>
+        <div class="tier"><div class="node store full"><b>Content</b><small>651 YAML definitions, referenced by ID</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 class="label">03 — Screenshots</h2>
+    <div class="shots">
+      <figure>
+        <div class="shot r169" data-src="../assets/shots/graveyard-combat.png">[ graveyard-combat.png ]</div>
+        <figcaption>fig. 1 — A night in progress</figcaption>
+      </figure>
+      <figure>
+        <div class="shot r169" data-src="../assets/shots/graveyard-sandbox.png">[ graveyard-sandbox.png ]</div>
+        <figcaption>fig. 2 — The dev sandbox mid-wave, with per-system sim timings on the left. The GC figure in that overlay is the whole Unity frame, not the sim.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>

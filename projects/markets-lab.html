@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markets Lab — Dylan Corbishley</title>
+<meta name="description" content="Markets Lab: an agent-based economy simulator and an honest backtesting environment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">Markets Lab</h1>
+    <p class="lede">Two tools in one project. One is a simulated economy where prices emerge from real economic activity. The other is a backtesting environment.</p>
+    <dl class="meta">
+      <div><dt>year</dt><dd>2026</dd></div>
+      <div><dt>status</dt><dd>Work in progress</dd></div>
+      <div><dt>role</dt><dd>Solo</dd></div>
+      <div><dt>source</dt><dd>Private repo</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <div class="shot r169" data-src="../assets/shots/markets-hero.png">[ markets-hero.png ]</div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — Simulated Economy</h2>
+      <div class="body prose">
+        <p>Most existing market simulators give agents an outside "fundamental value", usually a random walk or historical prices. Here the fundamental comes from inside the model. Firms hire labour, produce and sell goods, service debt and report earnings. Traders read those reports, form their own valuations and trade. Prices come out of the resulting order flow.</p>
+        <p>The goal is understanding, not prediction. Success means <strong>unprogrammed emergence</strong>: Okun's law and the Phillips curve reproduced from simple rules, realistic price action and order flow.</p>
+        <p>One early finding: single-path time averages don't converge, because the economy is <strong>non-ergodic</strong>. This means that any statistics produced must come from an ensemble run rather than one long one</p>
+      </div>
+    </div>
+    <div class="diagram spaced">
+      <div class="chain" role="img" aria-label="Pipeline: real economy, then firm earnings, then dividends and net worth, then trader valuation, then order book, then L1 price output.">
+        <div class="node"><b>real economy</b></div><span class="arrow">→</span>
+        <div class="node"><b>firm earnings</b></div><span class="arrow">→</span>
+        <div class="node"><b>dividends · net worth</b></div><span class="arrow">→</span>
+        <div class="node"><b>trader valuation</b></div><span class="arrow">→</span>
+        <div class="node"><b>order book</b></div><span class="arrow">→</span>
+        <div class="node core"><b>L1 price</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — Trading Algo Playground</h2>
+      <div class="body prose">
+        <p>A research environment for systematic equity strategies at 1-minute resolution. Known biases are either <strong>prevented by the engine</strong> or <strong>reported loudly</strong> in the results.</p>
+        <ul>
+          <li>Look-ahead is impossible in the event-driven engine.</li>
+          <li>Each run reports the biases it couldn't prevent, with severities.</li>
+          <li>Parameter sweeps run in two tiers: a quick screen of the whole space, then full runs on the survivors.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>03 — How it's built</h2>
+      <div class="body">
+        <div class="stack">
+          <div><span class="k">simulation core</span><span class="v">C++20 · C ABI · pybind11</span></div>
+          <div><span class="k">orchestration</span><span class="v">Python · run management · batch fleet</span></div>
+          <div><span class="k">data</span><span class="v">Parquet (hive-partitioned) · memory-mapped snapshots</span></div>
+          <div><span class="k">interface</span><span class="v">React SPA, generated from a backend schema</span></div>
+          <div><span class="k">environment</span><span class="v">Docker · toolchain pinned in containers</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 class="label">04 — Screenshots</h2>
+    <div class="shots">
+      <figure>
+        <div class="shot" data-src="../assets/shots/markets-econ.png">[ markets-econ.png ]</div>
+        <figcaption>fig. 1 — The macro view of a 167-day run: unemployment, inflation, output, wages and credit. The emergence panel is empty as this run is not part of an ensemble.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/markets-sweep.png">[ markets-sweep.png ]</div>
+        <figcaption>fig. 2 — A parameter sweep where the quick screen and the full runs disagree. The UI reports it as a finding.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/markets-backtest.png">[ markets-backtest.png ]</div>
+        <figcaption>fig. 3 — A ten-year Donchian breakout backtest over ten symbols: equity curve and drawdown.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/markets-bias.png">[ markets-bias.png ]</div>
+        <figcaption>fig. 4 — The same run's bias report. Each bias is marked.</figcaption>
+      </figure>
+      <figure class="wide">
+        <div class="shot r219" data-src="../assets/shots/markets-explore.png">[ markets-explore.png · wide ]</div>
+        <figcaption>fig. 5 — Explore: real OHLC candles, re-requested from the server as you zoom.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>

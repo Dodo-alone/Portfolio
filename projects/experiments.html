@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiments — Dylan Corbishley</title>
+<meta name="description" content="Experiments: the logistic map in CUDA, wave function collapse terrain, the Mandelbrot set and an N-body sandbox.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">Experiments</h1>
+    <p class="lede">Emergence, chaos and procedural generation. Small side projects that I found interesting enough to share</p>
+    <dl class="meta">
+      <div><dt>topics</dt><dd>Chaos · fractals · procedural terrain · gravity</dd></div>
+      <div><dt>languages</dt><dd>CUDA · C++ · Python</dd></div>
+      <div><dt>status</dt><dd>all Finished</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — The logistic map</h2>
+      <div class="body prose">
+        <p>The bifurcation diagram of x → rx(1 − x) for r from 3.449 to 4.0 2²⁵ values of r are iterated in parallel on the GPU in CUDA, and every visited point is accumulated as density into a 3840×2160 frame.</p>
+        <p>I wrote the first version at 16. The portrait crop has been my phone's lock screen ever since, and I have still never seen any image of it that resolves more detail.</p>
+      </div>
+    </div>
+    <div class="pair spaced" style="--cols: 3.85fr 1fr">
+      <figure>
+        <a class="shot has-img" style="aspect-ratio: 16 / 9" href="../assets/img/logistic-map.webp"><img src="../assets/img/logistic-map-thumb.webp" alt="Logistic map bifurcation diagram rendered in white on black, r from 3.449 to 4" loading="lazy"></a>
+        <figcaption>fig. 1 — r ∈ [3.449, 4] at 3840×2160.</figcaption>
+      </figure>
+      <figure>
+        <a class="shot has-img" style="aspect-ratio: 1080 / 2340" href="../assets/img/logistic-map-phone.webp"><img src="../assets/img/logistic-map-phone-thumb.webp" alt="Portrait crop of the logistic map" loading="lazy"></a>
+        <figcaption>fig. 2 — 1080×2340.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — Wave function collapse</h2>
+      <div class="body prose">
+        <p>Maps for a text RPG, generated with wave function collapse over hand-tuned tilesets. Each tile refers to a probability mass function over its neighbors, the algorithm keeps collapsing the most constrained cell until the map settles into snow on the ridges, forest below them, desert and lakes.</p>
+      </div>
+    </div>
+    <div class="pair spaced" style="--cols: 1fr 1.756fr">
+      <figure>
+        <a class="shot pixel has-img" style="aspect-ratio: 2 / 3" href="../assets/img/wfc-terrain-1.webp"><img src="../assets/img/wfc-terrain-1-thumb.webp" alt="Pixel-art terrain map with snowy ridges, forests, desert and rivers" loading="lazy"></a>
+        <figcaption>fig. 3 — 1920×2880.</figcaption>
+      </figure>
+      <figure>
+        <a class="shot pixel has-img" style="aspect-ratio: 5264 / 4496" href="../assets/img/wfc-terrain-2.webp"><img src="../assets/img/wfc-terrain-2-thumb.webp" alt="Pixel-art terrain map with a large lake between mountain ranges" loading="lazy"></a>
+        <figcaption>fig. 4 — 5264×4496.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>03 — Fractals and gravity</h2>
+      <div class="body prose">
+        <p>Two C++ projects for learning the language: a Mandelbrot renderer, and an N-body gravity sandbox with OpenGL and GLFW including hand-written shaders and a sprite renderer.</p>
+      </div>
+    </div>
+    <div class="pair spaced" style="--cols: 1fr 1fr">
+      <figure>
+        <a class="shot r169 has-img" href="../assets/img/mandelbrot.webp"><img src="../assets/img/mandelbrot-thumb.webp" alt="Mandelbrot set in black on white" loading="lazy"></a>
+        <figcaption>fig. 5 — The Mandelbrot set at 3840×2160.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot r169" data-src="../assets/shots/nbody.png">[ nbody.png ]</div>
+        <figcaption>fig. 6 — The N-body sandbox: two bodies in orbit.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>

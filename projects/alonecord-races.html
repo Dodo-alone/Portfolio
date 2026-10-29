@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alonecord Races — Dylan Corbishley</title>
+<meta name="description" content="Alonecord Races: a Discord activity for betting on marble races, run by a discrete-event physics engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">Alonecord Races</h1>
+    <p class="lede">A Discord activity where you bet on virtual ball races, inspired by the twitter account "horse race tests". The races run on a discrete-event physics engine I wrote from scratch.</p>
+    <dl class="meta">
+      <div><dt>year</dt><dd>2025</dd></div>
+      <div><dt>status</dt><dd>--replicas=0</dd></div>
+      <div><dt>role</dt><dd>Solo</dd></div>
+      <div><dt>source</dt><dd>Private repo</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <div class="shot r169" data-src="../assets/shots/alonecord-hero.png">[ alonecord-hero.png ]</div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — Overview</h2>
+      <div class="body prose">
+        <p>Most physics engines advance in discrete steps and reevaluate conditions. This engine doesn't step at all. For each ball it solves for the <strong>exact time</strong> a force next acts on it (for example through a collision), it puts those events in a priority queue, and jumps straight to the earliest one. Nothing tunnels through a wall, there's no timestep to tune, and no computation is wasted updating positions for rigid bodies under no acceleration</p>
+        <p>The deepest bug: ball-to-ball collisions kept misfiring because I didn't compare the two balls' positions at a <strong>common reference time</strong>. Each ball's position is only valid at its own last event, so both have to be advanced to the same instant before the maths works.</p>
+        <p>Every race is seeded, and each Discord server gets the same game until a new one is generated, so everyone watching sees the same race, with a provably fair predetermined outcome. Discord's activity sandbox didn't play nicely with websockets, so the client switched to polling.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — The event loop</h2>
+      <div class="body prose">
+        <p>The server simulates the whole race up front, and the React client plays back the resulting event log.</p>
+      </div>
+    </div>
+    <div class="diagram spaced">
+      <div class="chain" role="img" aria-label="Event loop: predict each ball's next collision, push events into a priority queue ordered by time, pop the earliest, advance all balls to that time and resolve the collision, then re-predict only the balls involved. The finished event log is played back by the React client.">
+        <div class="node"><b>predict</b><small>next wall / endpoint / ball hit</small></div>
+        <span class="arrow">→</span>
+        <div class="node"><b>priority queue</b><small>ordered by time</small></div>
+        <span class="arrow">→</span>
+        <div class="node core"><b>pop earliest</b><small>advance to t · resolve</small></div>
+        <span class="arrow">→</span>
+        <div class="node"><b>re-predict</b><small>only affected balls</small></div>
+        <span class="arrow">→</span>
+        <div class="node store"><b>event log</b><small>played back in React</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>03 — How it's built</h2>
+      <div class="body">
+        <div class="stack">
+          <div><span class="k">engine</span><span class="v">Python · pure discrete-event physics</span></div>
+          <div><span class="k">server</span><span class="v">Flask · per-server game state</span></div>
+          <div><span class="k">client</span><span class="v">React · Vite · Discord Activity</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 class="label">04 — Screenshots</h2>
+    <div class="shots">
+      <figure class="wide">
+        <div class="shot r169 contain" data-src="../assets/shots/alonecord-race.webp">[ alonecord-race.webp ]</div>
+        <figcaption>fig. 1 — A full race.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/alonecord-betting.png">[ alonecord-betting.png ]</div>
+        <figcaption>fig. 2 — Betting opens during the countdown, with odds per ball.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/alonecord-winner.png">[ alonecord-winner.png ]</div>
+        <figcaption>fig. 3 — The winner screen settles each player's bet.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>

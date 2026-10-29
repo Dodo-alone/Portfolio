@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MV Studio — Dylan Corbishley</title>
+<meta name="description" content="MV Studio: a web app for the whole computer-vision loop, from capture and labelling to training, evaluation and deployment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header wrap">
+  <a class="navlink" href="../index.html#work">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+    <span>all projects</span>
+  </a>
+  <a class="navlink home" href="../index.html">dylan corbishley</a>
+</header>
+
+<main>
+  <section class="intro wrap">
+    <h1 class="display sm decode">MV Studio</h1>
+    <p class="lede">An easy to use web-app covering the entire modern machine vision workflow: capture or import data, label it, compose a dataset, train a model, evaluate its performance, and refine until you are ready to export and deploy</p>
+    <dl class="meta">
+      <div><dt>year</dt><dd>2026</dd></div>
+      <div><dt>status</dt><dd>Working MVP</dd></div>
+      <div><dt>role</dt><dd>Solo</dd></div>
+      <div><dt>source</dt><dd>Private · walkthrough on request</dd></div>
+    </dl>
+  </section>
+
+  <section class="block wrap">
+    <figure>
+      <div class="shot r169" data-src="../assets/shots/mv-studio-hero.png">[ mv-studio-hero.png ]</div>
+      <figcaption>Inspect: ground truth against predictions on a held-out image. Green boxes are hits, amber dashed boxes are vials the model missed.</figcaption>
+    </figure>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>01 — Overview</h2>
+      <div class="body prose">
+        <p>Begining life as a collection of CLI tools I used during my summer internship on a machine vision project, I decided to create a gui in my own time to speed up my work. Stakeholders noticed and saw value in developing it further for internal use at the company</p>
+        <p>The CLI pipeline's stages were already thin wrappers over importable functions from the core ML library I had been working on, so the backend <strong>imports</strong> them and gets structured results instead of scraping stdout. That generic ML core was extracted into its own package, and a Flask API, a job runner, a database and a React app sit on top of it.</p>
+        <p>It's deliberately single-tenant, but each seam (job runner, storage, database) is shaped so that a shared multi-user GPU server is a refactor, not a rewrite.</p>
+      </div>
+    </div>
+    <div class="diagram spaced">
+      <div class="chain" role="img" aria-label="The workflow: capture or import images, label them in CVAT, build a dataset, train a model, evaluate it, inspect ground truth against predictions, then use or export the model.">
+        <div class="node"><b>capture</b></div><span class="arrow">→</span>
+        <div class="node"><b>label · CVAT</b></div><span class="arrow">→</span>
+        <div class="node"><b>dataset</b></div><span class="arrow">→</span>
+        <div class="node core"><b>train</b></div><span class="arrow">→</span>
+        <div class="node"><b>evaluate</b></div><span class="arrow">→</span>
+        <div class="node"><b>inspect</b></div><span class="arrow">→</span>
+        <div class="node store"><b>use · export</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>02 — Under the hood</h2>
+      <div class="body prose">
+        <ul>
+          <li><strong>Jobs run outside the request cycle.</strong> Each training, evaluation or export job is its own subprocess, so a native crash can't take the API down. Logs stream to the browser over SSE, and you can reattach after a reload.</li>
+          <li><strong>One GPU, one job</strong> Heavy jobs are serialised behind a lock, and a CUDA out-of-memory error becomes an actionable "reduce batch size" message instead of a dead worker.</li>
+          <li><strong>Content-addressed storage.</strong> Images and labels are keyed by hash, so the same image ingested twice is stored once. Deletion is a database cascade plus reference-counted cleanup, so orphaned files can't hang about.</li>
+          <li><strong>One detector interface.</strong> YOLO, RF-DETR and a dummy model sit on the same protocol, covering both boxes and instance masks. Adding an inference-only model is one adapter file, defining a training regime is a new class with a decorator</li>
+        </ul>
+      </div>
+    </div>
+    <div class="diagram spaced">
+      <div class="flow" role="img" aria-label="A React single-page app talks to a Flask API over REST, server-sent events for job logs and MJPEG for live frames. The API runs a subprocess job runner with a GPU lock, a content-addressed blob store with SQLite as the source of truth, and an ingestion layer for cameras and uploads, all on top of the mvcore ML package.">
+        <div class="tier"><div class="node full"><b>React SPA</b><small>projects · capture · label · train · evaluate · inspect · use</small></div></div>
+        <div class="arrow"><span>REST · SSE logs · MJPEG live</span></div>
+        <div class="tier"><div class="node core full"><b>Flask API</b><small>service layer · one assembly point</small></div></div>
+        <div class="arrow"><span>↓</span><span>↓</span><span>↓</span></div>
+        <div class="tier">
+          <div class="node"><b>Job runner</b><small>subprocess per job · GPU lock</small></div>
+          <div class="node store"><b>SQLite + blob store</b><small>content-addressed · refcounted</small></div>
+          <div class="node"><b>Ingestion</b><small>RealSense · webcam · upload</small></div>
+        </div>
+        <div class="arrow"><span>↓</span></div>
+        <div class="tier"><div class="node full"><b>mvcore</b><small>datasets · metrics · detectors · train · evaluate · autolabel</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="row">
+      <h2>03 — How it's built</h2>
+      <div class="body">
+        <div class="stack">
+          <div><span class="k">backend</span><span class="v">Python · Flask · SQLAlchemy + Alembic · gunicorn</span></div>
+          <div><span class="k">frontend</span><span class="v">React · TypeScript · Vite</span></div>
+          <div><span class="k">models</span><span class="v">YOLO (ultralytics) · RF-DETR · ONNX export</span></div>
+          <div><span class="k">hardware</span><span class="v">Intel RealSense · USB webcams · CUDA</span></div>
+          <div><span class="k">deployment</span><span class="v">Docker Compose · CPU and CUDA images · nginx</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 class="label">04 — Screenshots</h2>
+    <div class="shots">
+      <figure>
+        <div class="shot" data-src="../assets/shots/mv-studio-train.png">[ mv-studio-train.png ]</div>
+        <figcaption>fig. 1 — A YOLO run training on CPU, its log streamed from the job's subprocess.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot" data-src="../assets/shots/mv-studio-eval.png">[ mv-studio-eval.png ]</div>
+        <figcaption>fig. 2 — Runs scored on a held-out set with dimmer, blurrier images, against a dummy baseline.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <span>© 2026 Dylan Corbishley</span>
+  <nav aria-label="Footer"><a href="https://github.com/Dodo-alone">github</a><a href="mailto:djcbish@gmail.com">email</a></nav>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="../js/site.js"></script>
+</body>
+</html>
