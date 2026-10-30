@@ -40,7 +40,7 @@
     <div class="row">
       <h2>01 — Overview</h2>
       <div class="body prose">
-        <p>With a theme of "stupid games", you can play human vs human, human vs AI, or set two AIs against each other, minimax strategies will sit in a looping stalemate forever; some humans will too. It was built to experiment with game mechanics and AI strategies, so the architecture is modular:</p>
+        <p>With a theme of "stupid games", you can play human vs human, human vs AI, or set two AIs against each other. Minimax strategies will sit in a looping stalemate forever; some humans will too. It was built to experiment with game mechanics and AI strategies, so the architecture is modular:</p>
         <ul>
           <li><strong>New AI strategy:</strong> extend <code>GameSolverBase</code> and plug it in.</li>
           <li><strong>New player type:</strong> implement <code>IPlayer</code>, define a configuration, hook up a factory and register it with the player service. It then shows up in the UI.</li>

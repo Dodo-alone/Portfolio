@@ -40,7 +40,7 @@
     <div class="row">
       <h2>01 — Overview</h2>
       <div class="body prose">
-        <p>Most physics engines advance in discrete steps and reevaluate conditions. This engine doesn't step at all. For each ball it solves for the <strong>exact time</strong> a force next acts on it (for example through a collision), it puts those events in a priority queue, and jumps straight to the earliest one. Nothing tunnels through a wall, there's no timestep to tune, and no computation is wasted updating positions for rigid bodies under no acceleration</p>
+        <p>Most physics engines advance in discrete steps and reevaluate conditions. This engine doesn't step at all. For each ball it solves for the <strong>exact time</strong> a force next acts on it (for example through a collision), it puts those events in a priority queue, and jumps straight to the earliest one. Nothing tunnels through a wall, there's no timestep to tune, and no computation is wasted updating positions for rigid bodies under no acceleration.</p>
         <p>The deepest bug: ball-to-ball collisions kept misfiring because I didn't compare the two balls' positions at a <strong>common reference time</strong>. Each ball's position is only valid at its own last event, so both have to be advanced to the same instant before the maths works.</p>
         <p>Every race is seeded, and each Discord server gets the same game until a new one is generated, so everyone watching sees the same race, with a provably fair predetermined outcome. Discord's activity sandbox didn't play nicely with websockets, so the client switched to polling.</p>
       </div>

@@ -50,11 +50,11 @@
       <div class="body prose">
         <p>This is the current iteration of a long running project, taking with it some hard learned lessons from previous iterations:</p>
         <ul>
-          <li><strong>The sim has zero Unity references.</strong> The view sends commands, and the sim publishes snapshots and events. This prevents unity bloat from reaching the core engine</li>
+          <li><strong>The sim has zero Unity references.</strong> The view sends commands, and the sim publishes snapshots and events. This prevents Unity bloat from reaching the core engine.</li>
           <li><strong>No allocation in the steady-state tick.</strong> Various gates all have to come in at 0 bytes per tick, so the sim adds nothing to the garbage collector mid-fight. (Unity itself still allocates; the gate is on my code.)</li>
           <li><strong>Deterministic:</strong> seeded RNG only, no wall clock, no dependence on hash order. Any run replays exactly on the same build.</li>
         </ul>
-        <p>Because the sim runs headless, bots can play it at scale. Balance is tested with automated studies over 20+ seeds (adversarial, synergy and patch experiments) instead of by feel alone. The current work is an adaptive night director that composes waves from enemy verbs and pushes until it challenges you.</p>
+        <p>Because the sim runs headless, bots can play it at scale. Balance is tested with automated studies over 20+ seeds (adversarial, synergy and patch experiments) instead of by feel alone. The current work is an adaptive combat director that composes waves from enemy verbs and pushes until it challenges you.</p>
       </div>
     </div>
   </section>
@@ -83,7 +83,7 @@
     <div class="shots">
       <figure>
         <div class="shot r169" data-src="../assets/shots/graveyard-combat.png">[ graveyard-combat.png ]</div>
-        <figcaption>fig. 1 — A night in progress</figcaption>
+        <figcaption>fig. 1 — A night in progress.</figcaption>
       </figure>
       <figure>
         <div class="shot r169" data-src="../assets/shots/graveyard-sandbox.png">[ graveyard-sandbox.png ]</div>

@@ -23,12 +23,12 @@
 <main>
   <section class="intro wrap">
     <h1 class="display sm decode">MV Studio</h1>
-    <p class="lede">An easy to use web-app covering the entire modern machine vision workflow: capture or import data, label it, compose a dataset, train a model, evaluate its performance, and refine until you are ready to export and deploy</p>
+    <p class="lede">An easy to use web-app covering the entire modern machine vision workflow: capture or import data, label it, compose a dataset, train a model, evaluate its performance, and refine until you are ready to export and deploy.</p>
     <dl class="meta">
       <div><dt>year</dt><dd>2026</dd></div>
       <div><dt>status</dt><dd>Working MVP</dd></div>
       <div><dt>role</dt><dd>Solo</dd></div>
-      <div><dt>source</dt><dd>Private · walkthrough on request</dd></div>
+      <div><dt>source</dt><dd>Private repo</dd></div>
     </dl>
   </section>
 
@@ -43,7 +43,7 @@
     <div class="row">
       <h2>01 — Overview</h2>
       <div class="body prose">
-        <p>Begining life as a collection of CLI tools I used during my summer internship on a machine vision project, I decided to create a gui in my own time to speed up my work. Stakeholders noticed and saw value in developing it further for internal use at the company</p>
+        <p>Begining life as a collection of CLI tools I used during my summer internship on a machine vision project, I decided to create a GUI in my own time to speed up my work. Stakeholders noticed and saw value in developing it further for internal use at the company.</p>
         <p>The CLI pipeline's stages were already thin wrappers over importable functions from the core ML library I had been working on, so the backend <strong>imports</strong> them and gets structured results instead of scraping stdout. That generic ML core was extracted into its own package, and a Flask API, a job runner, a database and a React app sit on top of it.</p>
         <p>It's deliberately single-tenant, but each seam (job runner, storage, database) is shaped so that a shared multi-user GPU server is a refactor, not a rewrite.</p>
       </div>
@@ -67,9 +67,9 @@
       <div class="body prose">
         <ul>
           <li><strong>Jobs run outside the request cycle.</strong> Each training, evaluation or export job is its own subprocess, so a native crash can't take the API down. Logs stream to the browser over SSE, and you can reattach after a reload.</li>
-          <li><strong>One GPU, one job</strong> Heavy jobs are serialised behind a lock, and a CUDA out-of-memory error becomes an actionable "reduce batch size" message instead of a dead worker.</li>
+          <li><strong>One GPU, one job.</strong> Heavy jobs are serialised behind a lock, and a CUDA out-of-memory error becomes an actionable "reduce batch size" message instead of a dead worker.</li>
           <li><strong>Content-addressed storage.</strong> Images and labels are keyed by hash, so the same image ingested twice is stored once. Deletion is a database cascade plus reference-counted cleanup, so orphaned files can't hang about.</li>
-          <li><strong>One detector interface.</strong> YOLO, RF-DETR and a dummy model sit on the same protocol, covering both boxes and instance masks. Adding an inference-only model is one adapter file, defining a training regime is a new class with a decorator</li>
+          <li><strong>One detector interface.</strong> YOLO, RF-DETR and a dummy model sit on the same protocol, covering both boxes and instance masks. Adding an inference-only model is one adapter file, defining a training regime is a new class with a decorator.</li>
         </ul>
       </div>
     </div>
